@@ -27,10 +27,10 @@ Nel presente repository è definita la soluzione individuata.
 Nello specifico sono riportati:
 
 - [sequence diagram](sequence-diagram.md) del flow implementato da INAD e Agenzia Riscossione;
-- il [formato della lista di CF](CFList.json) predisposto da Agenzia Riscossione di cui di richiedono i DD;
-- il [formato della lista di CF con i relativi DD](DDList.json) predisposto da INAD in rispota ad una richiesta dell'Agenzia Riscossione;
-- l'[OpenAPI implementato dall'Agenzia Riscossione](openAPIAR.yaml);
-- l'[OpenAPI implementato dall'INAD](openAPIINAD.yaml).
+- il [formato della lista di CF](listCF.json) predisposto da Agenzia Riscossione di cui di richiedono i DD;
+- il [formato della lista di CF con i relativi DD](listDD.json) predisposto da INAD in rispota ad una richiesta dell'Agenzia Riscossione;
+- l'[OpenAPI implementato dall'Agenzia Riscossione](openapiAR.yaml);
+- l'[OpenAPI implementato dall'INAD](openapiINAD.yaml).
 
 Si assume che per il recupero: 
 
