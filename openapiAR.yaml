@@ -77,14 +77,14 @@ paths:
 
       responses:
         "200":
-          description: risorsa richiesta, codificata in base64, il mime type relativo è specificato nel descrittore dell'istanza
+          description: risorsa richiesta, codificata in base64 del json della lista di codici fiscali conforme al json-schema listCF.json
           content:
               text/plain:
                   schema:
                       type: string
                       format: byte
         "206":
-          description: porzione di risorsa richiesta, codificata in base64, il mime type relativo è specificato nel descrittore dell'istanza
+          description: porzione di risorsa richiesta, codificata in base64 del json della lista di codici fiscali conforme al json-schema listCF.json
           content:
               text/plain:
                   schema:

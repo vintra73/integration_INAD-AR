@@ -71,14 +71,14 @@ paths:
 
       responses:
         "200":
-          description: risorsa richiesta
+          description: risorsa richiesta, codificata in base64 del json della lista dei domicili digitali conforme al json-schema listDD.json
           content:
               text/plain:
                   schema:
                       type: string
                       format: byte
         "206":
-          description: porzione di risorsa richiesta
+          description: porzione di risorsa richiesta, codificata in base64 del json della lista dei domicili digitali conforme al json-schema listDD.json
           content:
               text/plain:
                   schema:
