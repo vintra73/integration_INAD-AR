@@ -1,0 +1,197 @@
+openapi: 3.0.3
+
+info:
+    title: e-service Agenzia Riscossione
+
+    version: 1.0.0
+
+    description: |-
+        API rese disponibili da IAND per permettere il recuperare domicili digitali ad Agenzia Riscossione
+
+    contact:
+        name: AgID - Agenzia per l'Italia Digitale
+        url: https://www.agid.gov.it/
+
+    license:
+        name: CC BY-NC-SA 4.0
+        url: https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+servers:
+    - url: https://<inad_endpoint>
+      description: INAD endpoint
+
+paths:
+  /reciveCFList/{idCFList}:
+    get:
+      description: ricezione disponibilità lista dei domicili digitali 
+
+      parameters:
+        - name: idCFList
+          in: path
+          description: id della lista dei codici fiscali richiesta da Agenzia Riscossione
+          required: true
+          schema:
+              type: string        
+        - name: digestIdCFist
+          in: query
+          description: digest della lista dei codici fiscali richiesta da Agenzia Riscossione (SHA-256)
+          required: true
+          schema:
+              type: string
+
+      responses:
+        "200":
+            $ref: "#/components/responses/OKRequest"
+        "400":
+            $ref: "#/components/responses/BadRequest"
+        "401":
+            $ref: "#/components/responses/Unauthorized"
+        "500":
+            $ref: "#/components/responses/ServerError"
+        "503":
+            $ref: "#/components/responses/ServiceUnavaliable"
+
+  /getDDList/{idDDList}:
+    get:
+      description: recupero lista dei domicili digitali
+
+      parameters:
+                - in: header
+                  name: If-Match
+                  description: precondizione contenente l'hash della risorsa
+                  required: true
+                  schema:
+                      type: string
+                - name: idDDList
+                  in: path
+                  description: id della lista dei domicili digitali predisposta da INAD
+                  required: true
+                  schema:
+                      type: string
+
+      responses:
+        "200":
+          description: risorsa richiesta
+          content:
+              text/plain:
+                  schema:
+                      type: string
+                      format: byte
+        "206":
+          description: porzione di risorsa richiesta
+          content:
+              text/plain:
+                  schema:
+                      type: string
+                      format: byte
+          headers:
+              Content-Range:
+                  description: espressione del range incluso nella risposta
+                  schema:
+                      type: string
+                      example: bytes 21010-47021/47022
+        "400":
+            $ref: "#/components/responses/BadRequest"
+        "401":
+            $ref: "#/components/responses/Unauthorized"
+        "404":
+            $ref: "#/components/responses/NotFound"
+        "412":
+            $ref: "#/components/responses/PreconditionFailed"
+        "416":
+            $ref: "#/components/responses/RangeNotSatisfiable"
+        "428":
+            $ref: "#/components/responses/PreconditionRequired"
+        "500":
+            $ref: "#/components/responses/ServerError"
+        "503":
+            $ref: "#/components/responses/ServiceUnavaliable"
+
+components:
+  responses:
+    OKRequest:
+        description: Richiesta completata con successo
+
+
+    BadRequest:
+        description: Forma della richiesta non conforme alla specifica
+        content:
+            application/json:
+                schema:
+                    $ref: "#/components/schemas/Error"
+    
+    ServiceUnavaliable:
+        description: Servizio non disponibile
+        content:
+            application/json:
+                schema:
+                    $ref: "#/components/schemas/Error"
+      
+    Unauthorized:
+        description: Richiesta non autorizzata       
+        content:
+            application/json:
+                schema:
+                    $ref: "#/components/schemas/Error"
+    
+    ServerError:
+        description: Errore processamento richiesta
+        content:
+            application/json:
+                schema:
+                    $ref: "#/components/schemas/Error"
+
+    NotFound:
+        description: Risorsa non trovata
+        content:
+            application/json:
+                schema:
+                    $ref: "#/components/schemas/Error"
+
+    PreconditionFailed:
+        description: Precondizione fallita
+        content:
+            application/json:
+                schema:
+                    $ref: "#/components/schemas/Error"
+
+    RangeNotSatisfiable:
+        description: Richiesta di range non soddisfacibile
+        content:
+            application/json:
+                schema:
+                    $ref: "#/components/schemas/Error"
+        headers:
+          Content-Range:
+              description: Espressione del range non soddisfacibile
+              schema:
+                  type: string
+                  example: bytes 21010-47021/47022
+
+    PreconditionRequired:
+        description: Precondizione richiesta
+        content:
+            application/json:
+                schema:
+                    $ref: "#/components/schemas/Error"
+        
+  schemas:
+    Error:
+            type: object
+            description: codice e descrizione condizione di errore
+            properties:
+                code:
+                    type: string
+                message:
+                    type: string
+            required:
+                - code
+                - message
+
+  securitySchemes:
+        bearerAuth:
+            scheme: bearer
+            bearerFormat: JWT
+            type: http
+            description: Implementazione conforme ad RFC8725
+        
