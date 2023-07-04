@@ -62,8 +62,8 @@ paths:
       description: recupero lista dei codici fiscali
 
       parameters:
-                - in: header
-                  name: If-Match
+                - name: If-Match
+                  in: header                  
                   description: precondizione contenente l'hash della risorsa
                   required: true
                   schema:
@@ -74,6 +74,12 @@ paths:
                   required: true
                   schema:
                       type: string
+                - name: Range
+                  in: header
+                  description: range della risorsa richiesta (rfc9110)
+                  required: false
+                  schema:
+                    type: string
 
       responses:
         "200":
@@ -91,11 +97,18 @@ paths:
                       type: string
                       format: byte
           headers:
+              Accept-Ranges: 
+                  description: tipologia di range gestito (rfc9110)              
+                  schema: 
+                      type: string
+                      enum:
+                        - bytes
               Content-Range:
-                  description: espressione del range incluso nella risposta
+                  description: espressione del range incluso nella risposta (rfc9110)
                   schema:
                       type: string
                       example: bytes 21010-47021/47022
+              
         "400":
             $ref: "#/components/responses/BadRequest"
         "401":

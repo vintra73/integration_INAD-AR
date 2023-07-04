@@ -68,6 +68,12 @@ paths:
                   required: true
                   schema:
                       type: string
+                - name: Range
+                  in: header
+                  description: range della risorsa richiesta (rfc9110)
+                  required: false
+                  schema:
+                    type: string
 
       responses:
         "200":
@@ -85,6 +91,12 @@ paths:
                       type: string
                       format: byte
           headers:
+              Accept-Ranges: 
+                  description: tipologia di range gestito (rfc9110)              
+                  schema: 
+                      type: string
+                      enum:
+                        - bytes
               Content-Range:
                   description: espressione del range incluso nella risposta
                   schema:
