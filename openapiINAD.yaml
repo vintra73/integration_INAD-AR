@@ -73,7 +73,27 @@ paths:
                   schema: 
                       type: string
                       enum:
-                        - bytes 
+                        - bytes
+              Content-Type:
+                 description: mime type della risposta
+                 schema: 
+                    type: string
+                    enum:
+                      - application/json
+              Content-Length: 
+                  description: numero di octets della risposta (rfc9110)              
+                  schema: 
+                      type: integer  
+        "400":
+            $ref: "#/components/responses/BadRequest"
+        "401":
+            $ref: "#/components/responses/Unauthorized"
+        "404":
+            $ref: "#/components/responses/NotFound"
+        "500":
+            $ref: "#/components/responses/ServerError"
+        "503":
+            $ref: "#/components/responses/ServiceUnavaliable"
 
     get:
       description: recupero lista dei domicili digitali
@@ -85,24 +105,27 @@ paths:
                   required: true
                   schema:
                       type: string
+                      example: ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad
                 - name: idDDList
                   in: path
                   description: id della lista dei domicili digitali predisposta da INAD
                   required: true
                   schema:
                       type: string
+                      example: xxads231xxx
                 - name: Range
                   in: header
                   description: range della risorsa richiesta (rfc9110)
                   required: false
                   schema:
                     type: string
+                    example: bytes=0-999
 
       responses:
         "200":
           description: risorsa richiesta, codificata in base64 del json della lista dei domicili digitali conforme al json-schema listDD.json
           content:
-              text/plain:
+              application/json:
                   schema:
                       type: string
                       format: byte
@@ -114,14 +137,12 @@ paths:
                       type: string
                       format: byte
           headers:
-              Accept-Ranges: 
-                  description: tipologia di range gestito (rfc9110)              
+              Content-Length: 
+                  description: numero di octets della risposta (rfc9110)              
                   schema: 
-                      type: string
-                      enum:
-                        - bytes
+                      type: integer                      
               Content-Range:
-                  description: espressione del range incluso nella risposta
+                  description: espressione del range incluso nella risposta (rfc9110) 
                   schema:
                       type: string
                       example: bytes 21010-47021/47022
@@ -198,10 +219,10 @@ components:
                     $ref: "#/components/schemas/Error"
         headers:
           Content-Range:
-              description: Espressione del range non soddisfacibile
+              description: Espressione della lunghezza corrente della risorsa
               schema:
                   type: string
-                  example: bytes 21010-47021/47022
+                  example: byte */47022
 
     PreconditionRequired:
         description: Precondizione richiesta
