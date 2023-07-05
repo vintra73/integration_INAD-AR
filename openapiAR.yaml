@@ -58,6 +58,28 @@ paths:
             $ref: "#/components/responses/ServiceUnavaliable"
 
   /getCFList/{idCFList}:
+    head:
+      description: informazioni sulla tipologia di range request gestita (rfc9110)
+
+      parameters:
+                - name: idDDList
+                  in: path
+                  description: id della lista dei domicili digitali predisposta da INAD
+                  required: true
+                  schema:
+                      type: string
+    
+      responses:
+        "200": 
+            description: tipologia di range request gestita (rfc9110)
+
+            headers:
+              Accept-Ranges: 
+                  description: tipologia di range gestito (rfc9110)              
+                  schema: 
+                      type: string
+                      enum:
+                        - bytes 
     get:
       description: recupero lista dei codici fiscali
 
